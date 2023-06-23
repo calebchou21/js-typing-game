@@ -41,8 +41,7 @@ function startStopwatch(){
 }
 
 function startMetrics(){
-  wpmInterval = setInterval(updateWPM, 1000);
-  cpmInterval = setInterval(updateCPM, 1000);
+  metricsInterval = setInterval(updateMetrics, 1000);
 }
 
 function updateStopwatch(){
@@ -55,8 +54,6 @@ function updateStopwatch(){
 
     const formattedTime = formatTime(minutes) + ':' + formatTime(seconds) + ':' + formatTime(milliseconds);
     timer.innerHTML = formattedTime;
-
-    setWPM(elapsedTime);
 }
 
 function formatTime(time) {
@@ -68,10 +65,16 @@ function resetWatch(){
     timer.innerHTML = '00:00:000';
 }
 
-function updateWPM(time){
-  const mins = time/60000;
+function updateMetrics(){
+  const curTime = new Date().getTime();
+  const elapsedTime = curTime - startTime;
+  const mins = elapsedTime/60000;
   const words = inputEl.value.split(" ").length-1;
+  const chars = inputEl.value.split('').length;
   const wpm = words/mins;
+  const cpm = chars/mins;
+
+  CPMEl.innerHTML = cpm.toFixed(2)
   WPMEl.innerHTML = wpm.toFixed(2)
 }
 
@@ -85,15 +88,17 @@ function handleInput(event) {
 
     if (firstKey) {
         startStopwatch();
+        startMetrics();
         firstKey = false;
-    }
+    } 
 
     if(!excludedKeys.includes(curKey)){
       inputEl.value += curKey;
+      checkWin();
       if (inputEl.value === curString) {
         charEls[curIndex].classList.add("correct");
         curIndex++;
-      } 
+      }
       else if (inputEl.value !== curString) {
         mistakes++;
         charEls[curIndex].classList.add("incorrect");
@@ -109,6 +114,13 @@ function handleInput(event) {
     }   
   }
   charEls[curIndex].classList.add("active");
+}
+
+//FIXME
+function checkWin(){
+  if(JSON.stringify(inputEl.value.split('')) == JSON.stringify(charArray)){
+    console.log('winner winner');
+  }
 }
   
 

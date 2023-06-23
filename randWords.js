@@ -1954,7 +1954,7 @@ const wordList = [
 ];
 
 function generateString(){
-    const length = Math.floor(Math.random() * 40 + 30);
+    const length = Math.floor(Math.random() * 10 + 4);
     let curWords = [];
     
     for(let i = 0; i < length; i++){
