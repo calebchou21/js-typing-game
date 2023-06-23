@@ -10,7 +10,6 @@ let charEls = [];
 let mistakes = 0;
 let charArray = [];
 let curIndex = 0;
-
 let startTime;
 let stopwatchInterval;
 let firstKey = true;

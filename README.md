@@ -1,0 +1,1 @@
+A little typing game. This code is not good..
