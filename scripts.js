@@ -15,16 +15,7 @@ let startTime;
 let stopwatchInterval;
 let firstKey = true;
 
-restartBtn.addEventListener("click", () => {
-    resetGame()
-})
-
-document.addEventListener("DOMContentLoaded", function() {
-    document.addEventListener("keydown", handleInput);
-    let text = generateString();
-    setParagraph(text);
-});
-
+//Setup 
 function resetGame(){
   setParagraph(generateString());
   resetWatch();
@@ -35,16 +26,23 @@ function resetGame(){
   mistakes = 0;
   mistakesEl.innerHTML = 0;
 }
+function setParagraph(text) {
+  charArray = text.split('');
+  text = Array.from(text).map(ch => `<span>${ch}</span>`).toString().replace(/,/g, '');
+  textElement.innerHTML = text;
+  curIndex = 0; 
+  charEls = document.querySelectorAll('span');
+  charEls[0].classList.add("active");
+}
 
+//Metrics
 function startStopwatch(){
   startTime = new Date().getTime();
   stopwatchInterval = setInterval(updateStopwatch, 10);
 }
-
 function startMetrics(){
   metricsInterval = setInterval(updateMetrics, 1000);
 }
-
 function updateStopwatch(){
     const curTime = new Date().getTime();
     const elapsedTime = curTime - startTime;
@@ -56,22 +54,18 @@ function updateStopwatch(){
     const formattedTime = formatTime(minutes) + ':' + formatTime(seconds) + ':' + formatTime(milliseconds);
     timer.innerHTML = formattedTime;
 }
-
 function formatTime(time) {
     return time < 10 ? '0' + time : time;
 }
-
 function resetMetrics(){
   clearInterval(metricsInterval);
   WPMEl.innerHTML = '0';
   CPMEl.innerHTML = '0';
 }
-
 function resetWatch(){
     clearInterval(stopwatchInterval);
     timer.innerHTML = '00:00:000';
 }
-
 function updateMetrics(){
   const curTime = new Date().getTime();
   const elapsedTime = curTime - startTime;
@@ -85,6 +79,7 @@ function updateMetrics(){
   WPMEl.innerHTML = wpm.toFixed(2)
 }
 
+//Typing logic
 function handleInput(event) {
 
     const excludedKeys = ['Backspace', 'Tab', 'Enter', 'Command', 'Meta', 'Shift', 'Control', 'Alt', 'CapsLock', 'Escape'];
@@ -130,13 +125,13 @@ function checkWin(){
   }
 }
   
-function setParagraph(text) {
-    charArray = text.split('');
-    text = Array.from(text).map(ch => `<span>${ch}</span>`).toString().replace(/,/g, '');
-    textElement.innerHTML = text;
-    curIndex = 0; 
-    charEls = document.querySelectorAll('span');
-    charEls[0].classList.add("active");
-}
+restartBtn.addEventListener("click", () => {
+  resetGame()
+})
 
+document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("keydown", handleInput);
+  let text = generateString();
+  setParagraph(text);
+});
 
