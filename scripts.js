@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function resetGame(){
   setParagraph(generateString());
   resetWatch();
+  resetMetrics();
   restartBtn.blur();
   inputEl.value = "";
   firstKey = true;
@@ -58,6 +59,12 @@ function updateStopwatch(){
 
 function formatTime(time) {
     return time < 10 ? '0' + time : time;
+}
+
+function resetMetrics(){
+  clearInterval(metricsInterval);
+  WPMEl.innerHTML = '0';
+  CPMEl.innerHTML = '0';
 }
 
 function resetWatch(){
@@ -116,15 +123,13 @@ function handleInput(event) {
   charEls[curIndex].classList.add("active");
 }
 
-//FIXME
 function checkWin(){
   if(JSON.stringify(inputEl.value.split('')) == JSON.stringify(charArray)){
-    console.log('winner winner');
+    clearInterval(stopwatchInterval);
+    clearInterval(metricsInterval);
   }
 }
   
-
-
 function setParagraph(text) {
     charArray = text.split('');
     text = Array.from(text).map(ch => `<span>${ch}</span>`).toString().replace(/,/g, '');
