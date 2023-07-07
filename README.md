@@ -1,3 +1,1 @@
-A little typing game with bad code...
-
 Generates random text to type and calculates metrics like WPM and CPM.
